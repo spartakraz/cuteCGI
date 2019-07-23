@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>cuteCGI User Guide</title>
+</head>
+<body>
+<h2>cuteCGI User Guide</h2>
+<hr>
+<p>
+To compile your cuteCGI applications, include <i>"ccgi/ccgi.h"</i> and use option <i> -lccgi</i>. 
+</p>
+<hr>
+<p>
+<b>Typedefs</b><br><br>
+ <i><font color='blue'>CCGI_BOOL</font></i><br>
+Emulation of boolean type. The value of this type can store either <i>TRUE</i> or <i>FALSE.</i><br><br>
+<code>
+CCGI_BOOL done = FALSE;<br>
+...<br>
+done = TRUE;<br>
+</code>
+</p>
+<hr>
+<p>
+<b>General Routines</b><br><br>
+ <i><font color='blue'>int ccgi_process_request(void)</font></i><br>
+This function serves as an entry point and MUST be used instead of traditional <i>main().</i><br><br>
+ <i><font color='blue'>void ccgi_echo(char *fmt, ...)</font></i><br>
+This function serves as a wrapper around <i>printf(char *fmt, ...)</i> and should always be used instead of the latter.<br><br>
+ <i><font color='blue'>void ccgi_echoln(char *fmt, ...)</font></i><br>
+Same as <i>ccgi_echo()</i> but adds '\n'  to the output.<br><br>
+</p>
+<hr>
+
+<p>
+<b>Managing HTTP GET/POST request variables</b><br><br>
+ <i><font color='blue'>int ccgi_request_vars_count(void)</font></i><br>
+ Gets the number of request variables passed.<br><br>
+ <i><font color='blue'>CCGI_BOOL ccgi_request_vars_isset(char *name)</font></i><br>
+Returns <i>TRUE</i> if the request variable with specified <i>name</i> is set,  <i>FALSE</i> otherwise.<br><br>
+ <i><font color='blue'>char *ccgi_request_vars_read(char *name)</font></i><br>
+Returns value of the request variable with specified <i>name</i>. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_request_vars_name_nth(int n)</font></i><br>
+Returns name of the <i>n-th</i> request variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_request_vars_value_nth(int n)</font></i><br>
+Returns value of the <i>n-th</i> request variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>void ccgi_request_vars_clear(void)</font></i><br>
+Clears the list of all request variables passed. <font color='red'>(Don't call this method on your own - it's for internal use only!)</font><br><br>
+
+ 
+ <i><font color='blue'>ccgi_submit_clicked</font></i><br>
+Merely an alias for <i>ccgi_request_vars_isset()</i>, used to check if specified submit was pressed.<br><br>
+</p>
+<hr>
+
+<p>
+<b>Managing HTTP COOKIE variables</b><br><br>
+ <i><font color='blue'>int ccgi_cookie_vars_count(void)</font></i><br>
+ Gets the number of cookie variables passed.<br><br>
+ <i><font color='blue'>CCGI_BOOL ccgi_cookie_vars_isset(char *name)</font></i><br>
+Returns <i>TRUE</i> if the cookie variable with specified <i>name</i> is set,  <i>FALSE</i> otherwise.<br><br>
+ <i><font color='blue'>void ccgi_cookie_vars_set(char *name, char *value, char *expires, char *path, char *domain, int secure)</font></i><br>
+Sets a cookie using given parameters.<br><br>
+ <i><font color='blue'>char *ccgi_cookie_vars_read(char *name)</font></i><br>
+Returns value of the cookie variable with specified <i>name</i>. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_cookie_vars_name_nth(int n)</font></i><br>
+Returns name of the <i>n-th</i> cookie variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_cookie_vars_value_nth(int n)</font></i><br>
+Returns value of the <i>n-th</i> cookie variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>void ccgi_cookie_vars_clear(void)</font></i><br>
+Clears the list of all cookie variables passed. <font color='red'>(Don't call this method on your own - it's for internal use only!)</font><br><br>
+</p>
+<hr>
+
+<p>
+<b>Managing HTTP environment variables</b><br><br>
+ <i><font color='blue'>int ccgi_env_vars_count(void)</font></i><br>
+ Gets the number of environment variables passed.<br><br>
+ <i><font color='blue'>CCGI_BOOL ccgi_env_vars_isset(char *name)</font></i><br>
+Returns <i>TRUE</i> if the environment variable with specified <i>name</i> is set,  <i>FALSE</i> otherwise.<br><br>
+ <i><font color='blue'>char *ccgi_env_vars_read(char *name)</font></i><br>
+Returns value of the environment variable with specified <i>name</i>. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_env_vars_name_nth(int n)</font></i><br>
+Returns name of the <i>n-th</i> environment variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>char *ccgi_env_vars_value_nth(int n)</font></i><br>
+Returns value of the <i>n-th</i> environment variable passed. If the variable is not set, returns <i>NULL</i>.<br><br>
+ <i><font color='blue'>void ccgi_env_vars_clear(void)</font></i><br>
+Clears the list of all environment variables passed. <font color='red'>(Don't call this method on your own - it's for internal use only!)</font><br><br><br>
+</p>
+<hr>
+
+<p>
+<b>Managing HTTP session variables</b><br><br>
+ <i><font color='blue'>CCGI_BOOL ccgi_session_vars_set_dir(char *dir_name)</font></i><br>
+ Sets directory for storing session variables, e.g. <i>/var/tmp/</i>. Returns <i>TRUE</i> if the directory is valid, <i>FALSE</i> otherwise.<br><br>
+ <i><font color='blue'>int ccgi_session_vars_write(char *name, char *value)</font></i><br>
+ Writes specified <i>value</i> to the session variable with given <i>name</i>. Returns the number of characters written.<br><br>
+ <i><font color='blue'>char *ccgi_session_vars_read(char *name)</font></i><br>
+ Reads the session variable with given <i>name</i>. Returns <i>NULL</i> if the variable is not set.<br><br>
+ <i><font color='blue'>CCGI_BOOL ccgi_session_vars_isset(char *name)</font></i><br>
+Returns <i>TRUE</i> if the session variable with specified <i>name</i> is set,  <i>FALSE</i> otherwise.<br><br>
+</p>
+<hr>
+
+<p>
+<b>Managing HTTP Headers</b><br><br>
+ <i><font color='blue'>void ccgi_header_send_text_html(void)</font></i><br>
+ Sends standard <i>Content-Type: text/html</i> header.<br><br>
+ <i><font color='blue'>void ccgi_header_send_mime(char *mime)</font></i><br>
+ Sends specified <i>MIME</i> header.<br><br>
+  <i><font color='blue'>void ccgi_header_send_status(char *status)</font></i><br>
+ Sends specified <i>HTTP Status</i> header.<br><br>
+   <i><font color='blue'>void ccgi_header_send_pragma(char *pragma)</font></i><br>
+ Sends specified <i>HTTP Pragma</i> header.<br><br>
+    <i><font color='blue'>void ccgi_header_send_location(char *location)</font></i><br>
+ Sends specified <i>Location: </i> header.<br><br>
+</p>
+<hr>
+
+</body>
+</html>
+
